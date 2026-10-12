@@ -1,0 +1,6 @@
+.build/
+build/
+.swiftpm/
+previews/
+*.zip
+.DS_Store
