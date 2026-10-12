@@ -21,13 +21,16 @@ final class StatusBarController: NSObject, NSMenuDelegate {
 
     private func updateButton() {
         guard let button = item.button else { return }
-        let image = NSImage(systemSymbolName: "computermouse.fill", accessibilityDescription: "Naga Studio")
+        let device = model.device
+        let image = NSImage(systemSymbolName: device.isConnected ? "computermouse.fill" : "computermouse", accessibilityDescription: "Naga Studio")
         image?.isTemplate = true
         button.image = image
         button.imagePosition = .imageLeading
         button.font = .monospacedDigitSystemFont(ofSize: NSFont.systemFontSize, weight: .regular)
-        let level = model.device.isConnected ? model.device.batteryLevel : nil
+        let level = device.isConnected ? device.batteryLevel : nil
         button.title = level.map { " \($0)%" } ?? ""
+        button.appearsDisabled = !device.isConnected
+        button.toolTip = device.isConnected ? nil : "\(device.name) not connected"
     }
 
     private func trackDevice() {
